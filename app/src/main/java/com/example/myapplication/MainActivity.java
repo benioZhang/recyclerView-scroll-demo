@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
         int position = Integer.parseInt(mEditText.getText().toString());
 
         IndexScroller indexScroller = useSmoothScroller
-                ? new SmoothIndexScroller(mRecyclerView, preference)
-                : new ImmediateIndexScroller(mRecyclerView, preference);
-        indexScroller.scrollToPosition(position);
+                ? new SmoothIndexScroller(mRecyclerView)
+                : new ImmediateIndexScroller(mRecyclerView);
+        indexScroller.scrollToPosition(position, preference);
     }
 
     private void testJump() {

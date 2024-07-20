@@ -7,27 +7,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImmediateIndexScroller implements IndexScroller {
     private final RecyclerView mRecyclerView;
-    private final int mSnapPreference;
+    private int mSnapPreference;
     private int mTargetPosition = RecyclerView.NO_POSITION;
     private ScrollRunnable mScrollRunnable;
 
     public ImmediateIndexScroller(@NonNull RecyclerView recyclerView) {
-        this(recyclerView, SnapPreference.SNAP_TO_ANY);
-    }
-
-    public ImmediateIndexScroller(@NonNull RecyclerView recyclerView, @SnapPreference int snapPreference) {
         mRecyclerView = recyclerView;
-        mSnapPreference = snapPreference;
     }
 
     @Override
     public void scrollToPosition(int position) {
+        scrollToPosition(position, SnapPreference.SNAP_TO_ANY);
+    }
+
+    @Override
+    public void scrollToPosition(int position, @SnapPreference int snapPreference) {
         RecyclerView recyclerView = mRecyclerView;
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null || position < 0) {
             return;
         }
         mTargetPosition = position;
+        mSnapPreference = snapPreference;
         recyclerView.scrollToPosition(position);
         if (mScrollRunnable == null) {
             mScrollRunnable = new ScrollRunnable();

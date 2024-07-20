@@ -8,30 +8,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SmoothIndexScroller implements IndexScroller {
     private final RecyclerView mRecyclerView;
-    private final int mSnapPreference;
 
     public SmoothIndexScroller(@NonNull RecyclerView recyclerView) {
-        this(recyclerView, SnapPreference.SNAP_TO_ANY);
-    }
-
-    public SmoothIndexScroller(@NonNull RecyclerView recyclerView, @SnapPreference int snapPreference) {
         mRecyclerView = recyclerView;
-        mSnapPreference = snapPreference;
     }
 
     @NonNull
-    protected RecyclerView.SmoothScroller createScroller(Context context) {
-        return new SmoothScroller(context, mSnapPreference);
+    protected RecyclerView.SmoothScroller createScroller(@NonNull RecyclerView recyclerView, @SnapPreference int snapPreference) {
+        return new SmoothScroller(recyclerView.getContext(), snapPreference);
     }
 
     @Override
     public void scrollToPosition(int position) {
+        scrollToPosition(position, SnapPreference.SNAP_TO_ANY);
+    }
+
+    @Override
+    public void scrollToPosition(int position, @SnapPreference int snapPreference) {
         RecyclerView recyclerView = mRecyclerView;
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null || position < 0) {
             return;
         }
-        RecyclerView.SmoothScroller scroller = createScroller(recyclerView.getContext());
+        RecyclerView.SmoothScroller scroller = createScroller(recyclerView, snapPreference);
         scroller.setTargetPosition(position);
         layoutManager.startSmoothScroll(scroller);
     }
